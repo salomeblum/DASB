@@ -65,26 +65,26 @@ server <- function(input, output){
   output$kaggle_dup_count       <- renderText({ paste("Duplikate:", kaggle_dup_count) })
   
   output$kaggle_hist_numeric <- renderPlot({
-    ggplot(xwr_numeric_long, aes(x = Wert)) +
+    ggplot(kaggle_numeric_long, aes(x = Wert)) +
       geom_histogram(bins = 50, fill = "steelblue", color = "black") +
       facet_wrap(~Variable, scales = "free", ncol = 2)
   })
   
   output$kaggle_box_numeric <- renderPlot({
-    ggplot(xwr_box_numeric, aes(x = Variable, y = Wert)) +
+    ggplot(kaggle_box_numeric, aes(x = Variable, y = Wert)) +
       geom_boxplot(outlier.color = "red", fill = "steelblue", color = "black", alpha = 0.7) +
       facet_wrap(~Variable, scales = "free", ncol = 2)
   })
   
   output$kaggle_points_outliers <- renderPlot({
-    ggplot(kaggle_points_outliers_Rating, aes(x = seq_along(Rating), y = Rating)) +
+    ggplot(kaggle_points_outliers_Rating, aes(x = seq_along(points), y = points)) +
       geom_point(color = "red") +
       geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
       geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
   })
   
   output$kaggle_price_outliers <- renderPlot({
-    ggplot(kaggle_price_outliers_Rating, aes(x = seq_along(Rating), y = Rating)) +
+    ggplot(kaggle_price_outliers_Rating, aes(x = seq_along(price), y = price)) +
       geom_point(color = "red") +
       geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
       geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")

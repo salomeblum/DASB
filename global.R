@@ -124,7 +124,7 @@ kaggle_numeric_data <- kaggle_Dataset %>% select(where(is.numeric))
 #for column points
 kaggle_points_Q1  <- quantile(kaggle_Dataset$points, 0.25, na.rm = TRUE)
 kaggle_points_Q3  <- quantile(kaggle_Dataset$points, 0.75, na.rm = TRUE)
-kaggle_points_IQR <- IQR(kaggle_Dataset$Points, na.rm = TRUE)
+kaggle_points_IQR <- IQR(kaggle_Dataset$points, na.rm = TRUE)
 
 kaggle_points_lower_limit <- kaggle_points_Q1 - 1.5 * kaggle_points_IQR
 kaggle_points_upper_limit <- kaggle_points_Q3 + 1.5 * kaggle_points_IQR
