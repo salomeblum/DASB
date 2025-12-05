@@ -5,6 +5,7 @@ library(tidyverse)
 library(shiny)
 library(shinydashboard)
 library(corrplot)
+library(vcd)
 
 ## Loading Data
 XWines_raw <- read.csv("data/XWines_Full_100K_wines.csv", header = TRUE, sep = ",")
@@ -150,3 +151,43 @@ kaggle_numeric_long <- kaggle_numeric_data %>%
 
 kaggle_box_numeric <- kaggle_numeric_data %>%
   pivot_longer(cols = everything(), names_to = "Variable", values_to = "Wert")
+
+
+
+# ------------ Initialize variables on joined Data ---------------
+
+#joined dataset
+joined_data <- read.csv(
+  "data/joined_dataset2.csv",
+  header = TRUE,
+  sep = ",",
+  quote = "\"",
+  encoding = "UTF-8",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+) 
+
+#define acidity as ordinal data
+joined_data$Acidity <- factor(
+  joined_data$Acidity,
+  levels = c("Low", "Medium", "High"),
+  ordered = TRUE
+)
+
+#extract numerical data from joined_data
+exclude_cols <- c("X.1", "WineID", "WineryID", "X", "RegionID", "points_norm")
+q1_num_joined_data <- joined_data[sapply(joined_data, is.numeric) & !names(joined_data) %in% exclude_cols ]
+
+#create vector with column-names numerical_data
+q1_col_vec <- names(q1_num_joined_data)
+
+#create vector with column-names categorical/ordinal data
+q1_categ_cols <-c("Acidity", "Body", "Type")
+
+#create vector with all variable-names
+q1_all_vars <-c(q1_categ_cols, q1_col_vec)
+
+#variable for correlation matrix
+q1_joined_cor_matrix <- cor(num_joined_data, use = "pairwise.complete.obs") 
+
+

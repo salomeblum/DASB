@@ -95,4 +95,102 @@ server <- function(input, output){
              tl.col = "black", number.cex = 0.6)
   })
   
+  # ---- Outputs Q1 - Salomes Teil ----
+  
+  # ---- Correlations
+  #Show correlation value of two selected variables
+  output$q1_select_cor_out <- renderText({
+    
+    var1 <- input$q1_select_cor_1
+    var2 <- input$q1_select_cor_2
+    
+    # if no variables were selected
+    if (is.null(var1) || is.null(var2)) {
+      return("Please choose two variables.")
+    }
+    
+    # compute correlation value
+    cor_value <- cor(
+      num_joined_data[[var1]],
+      num_joined_data[[var2]],
+      use = "complete.obs"
+    )
+    
+    paste("Correlation value:", round(cor_value, 3))
+  })
+  
+  output$q1_correlation_graph <- renderPlot({
+    corrplot(q1_joined_cor_matrix, method = "color", type = "upper",
+             tl.col = "black", number.cex = 0.6)
+  })
+  
+  # ---- Scatterplots
+  #Show Scatterplots of two selected variables
+  
+  output$q1_scatter_plot <- renderPlot({
+    
+    var_x <- input$q1_select_scatter_x
+    var_y <- input$q1_select_scatter_y
+    var_color <- input$q1_select_scatter_color
+    
+    # missing x or y => no plot
+    if (is.null(var_x) || is.null(var_y)) return(NULL)
+    
+    # base plot
+    p <- ggplot(joined_data, aes_string(x = var_x, y = var_y))
+    
+    # add points (with or without color mapping)
+    if (var_color != "None") {
+      p <- p + geom_point(aes_string(color = var_color), alpha = 0.6)
+    } else {
+      p <- p + geom_point(alpha = 0.6, color = "#2C3E50")
+    }
+    
+    # add regression line
+    p <- p +
+      geom_smooth(method = "lm", se = TRUE, color = "red") +
+      theme_minimal(base_size = 14) +
+      labs(
+        x = var_x,
+        y = var_y,
+        color = var_color,
+        title = paste("Scatterplot:", var_x, "vs", var_y)
+      )
+    
+    p
+  })
+  
+  # ---- Categorical Plots
+  #Violinplot
+  output$q1_violin_plot <- renderPlot({
+    var_x <- input$q1_select_categ_x
+    var_y <- input$q1_select_categ_y
+    
+    ggplot(joined_data, aes_string(x = var_x, y = var_y)) +
+      geom_violin(fill = "skyblue", alpha = 0.6) +
+      geom_boxplot(width = 0.1, outlier.color = "red") +
+      theme_minimal() +
+      labs(
+        title = paste("Violinplot:", var_x, "by", "Acidity"),
+        x = var_x,
+        y = var_y
+      )
+  })
+  
+  output$q1_prop_bar_plot <- renderPlot({
+    var_x <- input$q1_select_categ_x
+    var_y <- input$q1_select_categ_y
+    
+    df <- na.omit(joined_data[, c(var_x, var_y)])
+    
+    ggplot(df, aes_string(x = var_x, fill = var_y)) +
+      geom_bar(position = "fill") +
+      scale_y_continuous(labels = scales::percent) +
+      theme_minimal() +
+      labs(
+        title = paste("Proportional Bar Plot:", var_x, "vs", var_y),
+        x = var_x,
+        fill = var_y
+      )
+  })
 }
