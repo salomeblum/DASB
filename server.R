@@ -95,6 +95,7 @@ server <- function(input, output){
              tl.col = "black", number.cex = 0.6)
   })
   
+
   # ---- Outputs Q1 - Salomes Teil ----
   
   # ---- Correlations
@@ -193,4 +194,212 @@ server <- function(input, output){
         fill = var_y
       )
   })
+
+  # --- Teil Marlon ---
+  europe <- c("Austria","France","Germany","Italy","Spain","Switzerland","Portugal",
+              "Greece","Romania","Hungary","Slovenia","Croatia","Bulgaria",
+              "England","Wales","Slovakia","Serbia","Georgia","Moldova","Luxembourg")
+  
+  americas <- c("United States","Canada","Mexico","Argentina","Chile","Uruguay","Brazil","Peru")
+  
+  europeDS <- reactive({ joinedWines %>% filter(country_clean %in% europe) })
+  americasDS <- reactive({ joinedWines %>% filter(country_clean %in% americas) })
+  
+  europeFiltered <- reactive({
+    df <- europeDS()
+    if(input$wineType != "All") df <- df %>% filter(Type == input$wineType)
+    df
+  })
+  americasFiltered <- reactive({
+    df <- americasDS()
+    if(input$wineType != "All") df <- df %>% filter(Type == input$wineType)
+    df
+  })
+  
+  prep <- function(df, yvar) {
+    df %>%
+      group_by(country_clean, .data[[yvar]]) %>%
+      summarise(count = n(), .groups = "drop") %>%
+      rename(y = .data[[yvar]])
+  }
+  
+  
+  # TAB 1 – EUROPE BUBBLE
+  output$bubble1 <- renderPlot({
+    req(input$yMax > input$yMin)
+    df <- prep(europeDS(), input$yVar)
+    
+    if (input$yVar == "Acidity") {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 22)) +
+        scale_y_discrete(limits = c("Low", "Medium", "High")) +
+        theme_minimal(base_size = 14) +
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none")
+    }
+    
+    else {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 22)) +
+        scale_y_continuous(limits = c(input$yMin, input$yMax)) +
+        theme_minimal(base_size = 14) +
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none")
+    }
+  })
+  
+  
+  # TAB 1 – AMERICAS BUBBLE
+  output$bubble2 <- renderPlot({
+    req(input$yMax > input$yMin)
+    df <- prep(americasDS(), input$yVar)
+    
+    if (input$yVar == "Acidity") {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 22)) +
+        scale_y_discrete(limits = c("Low", "Medium", "High")) +
+        theme_minimal(base_size = 14) +
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none")
+    } 
+    
+    else {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 22)) +
+        scale_y_continuous(limits = c(input$yMin, input$yMax)) +
+        theme_minimal(base_size = 14) +
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none")
+    }
+  })
+  
+  
+  # TAB 2 – HEX EUROPE
+  output$hex1 <- renderPlot({
+    req(input$hexMax > input$hexMin)
+    df <- europeDS()
+    
+    if (input$hexVar == "Acidity") {
+      ggplot(df, aes(x = points, y = Acidity)) +
+        geom_hex(bins = 40) +
+        scale_fill_viridis_c() +
+        theme_minimal(base_size = 14)
+    } 
+    
+    else {
+      ggplot(df, aes(x = points, y = .data[[input$hexVar]])) +
+        geom_hex(bins = 40) +
+        scale_fill_viridis_c() +
+        scale_y_continuous(limits = c(input$hexMin, input$hexMax)) +
+        theme_minimal(base_size = 14)
+    }
+  })
+  
+  # TAB 2 – HEX AMERICAS
+  output$hex2 <- renderPlot({
+    req(input$hexMax > input$hexMin)
+    df <- americasDS()
+    
+    if (input$hexVar == "Acidity") {
+      ggplot(df, aes(x = points, y = Acidity)) +
+        geom_hex(bins = 40) +
+        scale_fill_viridis_c() +
+        theme_minimal(base_size = 14)
+    } 
+    
+    else {
+      ggplot(df, aes(x = points, y = .data[[input$hexVar]])) +
+        geom_hex(bins = 40) +
+        scale_fill_viridis_c() +
+        scale_y_continuous(limits = c(input$hexMin, input$hexMax)) +
+        theme_minimal(base_size = 14)
+    }
+  })
+  
+  
+  # TAB 3 – BUBBLE WINE TYPE EUROPE
+  output$bubble_type_europe <- renderPlot({
+    req(input$typeYMax > input$typeYMin)
+    df <- prep(europeFiltered(), input$typeYVar)
+    
+    if (input$typeYVar == "Acidity") {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 25)) +
+        scale_y_discrete(limits = c("Low", "Medium", "High")) +
+        theme_minimal(base_size = 14) + 
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none") + 
+        labs(x = NULL, y = input$typeYVar)
+    } 
+    
+    else {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 25)) +
+        scale_y_continuous(limits = c(input$typeYMin, input$typeYMax)) +
+        theme_minimal(base_size = 14) + 
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none") + 
+        labs(x = NULL, y = input$typeYVar)
+    }
+  })
+  
+  
+  # TAB 3 – BUBBLE WINE TYPE AMERICAS
+  output$bubble_type_americas <- renderPlot({
+    req(input$typeYMax > input$typeYMin)
+    df <- prep(americasFiltered(), input$typeYVar)
+    
+    if (input$typeYVar == "Acidity") {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 25)) +
+        scale_y_discrete(limits = c("Low", "Medium", "High")) +
+        theme_minimal(base_size = 14) + 
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none") + 
+        labs(x = NULL, y = input$typeYVar)
+    } 
+    
+    else {
+      ggplot(df, aes(x = country_clean, y = y, size = count, color = country_clean)) +
+        geom_point(alpha = 0.8) +
+        scale_size_continuous(range = c(5, 25)) +
+        scale_y_continuous(limits = c(input$typeYMin, input$typeYMax)) +
+        theme_minimal(base_size = 14) + 
+        theme(
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "right"
+        ) +
+        guides(color = "none") + 
+        labs(x = NULL, y = input$typeYVar)
+    }
+  })
+  
 }

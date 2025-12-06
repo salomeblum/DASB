@@ -5,7 +5,7 @@ dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Datenqualität Xwines (DQA)", 
-               icon = icon("wine-glass"),
+               icon = icon("clipboard-check"),
                menuSubItem("Struktur", tabName = "xw_structure"),
                menuSubItem("Fehlende Werte", tabName = "xw_missing"),
                menuSubItem("Duplikate", tabName = "xw_dups"),
@@ -38,13 +38,16 @@ dashboardPage(
                menuSubItem("Korrelation", tabName = "kaggle_corr")
       ),
       
-      menuItem("Q1: Effects on prices and ratings", 
-               #icon = icon("clipboard-check"),
+      menuItem("Variable comparisons", 
+               icon = icon("glass-cheers"),
                menuSubItem("Description", tabName = "q1_description"),
                menuSubItem("Correlation", tabName = "q1_correlation"),
                menuSubItem("Scatterplots", tabName = "q1_scatter"),
                menuSubItem("Categorical Plots", tabName = "q1_categ")
-      )
+      ),
+
+      menuItem("Europe vs America", tabName = "thesis", icon = icon("globe"))
+
       
     )
   ),
@@ -89,6 +92,7 @@ dashboardPage(
       tabItem("kaggle_price_outliers", plotOutput("kaggle_price_outliers")),
       tabItem("kaggle_corr", plotOutput("kaggle_corr_matrix")),
       
+
       # Q1 - Salomes Teil
       tabItem(
         tabName = "q1_description",
@@ -277,9 +281,106 @@ dashboardPage(
           )
         )
         
-      )
+      ),
       
-    ) 
+
+      # --- Teil Marlon --- 
+      tabItem(tabName = "thesis",
+              
+              h2("Wine Analysis - Interactive Comparison",
+                 style = "text-align:center; color:#5a2d82; font-weight:bold; margin-bottom:30px;"),
+              
+              tabsetPanel(type = "tabs",
+                          
+                          # ----- Tab 1 -----
+                          tabPanel("1. Variable Comparison",
+                                   br(),
+                                   p("In this tab, you can compare the values of difrent variables for European and American countries."),
+                                   p("To do this, select a variable in the first selection field at the top and use the Y minimum and Y maximum fields to set the axes so that they show the desired value range."),
+                                   p("If you select the “Acidity” variable, the scale is set from low to high. It is important to note that certain values are not displayed depending on the scaling of the Y-axis."),
+                                   br(),
+                                   fluidRow(
+                                     column(4,
+                                            selectInput("yVar", "Y-Axis Variable:",
+                                                        choices = c("Price" = "price",
+                                                                    "Rating" = "points",
+                                                                    "ABV" = "ABV",
+                                                                    "Acidity" = "Acidity"),
+                                                        selected = "points")
+                                     ),
+                                     column(4, numericInput("yMin", "Y Minimum:", value = 0, min = 0)),
+                                     column(4, numericInput("yMax", "Y Maximum:", value = 100, min = 1))
+                                   ),
+                                   br(),
+                                   fluidRow(
+                                     column(6, box(title = "Europe", status = "primary", solidHeader = TRUE,
+                                                   plotOutput("bubble1", height = "550px"), width = 12)),
+                                     column(6, box(title = "Americas", status = "success", solidHeader = TRUE,
+                                                   plotOutput("bubble2", height = "550px"), width = 12))
+                                   )
+                          ),
+                          
+                          # ----- Tab 2 -----
+                          tabPanel("2. Rating vs. Variable",
+                                   br(), 
+                                   p("In the second tab, you can compare different variables with the rating. The values are divided again into European and American countries."), 
+                                   p("In the first selection field, you can select the desired variable and use the “Y minimum” and “Y maximum” buttons to set the scale accordingly."), 
+                                   p("If you select the “Acidity” variable, the scale is set from low to high. Please note that the display of certain values depends on the scaling of the Y-axis."), 
+                                   br(),
+                                   fluidRow(
+                                     column(4,
+                                            selectInput("hexVar", "Y-Variable vs Rating:",
+                                                        choices = c("Price" = "price",
+                                                                    "ABV" = "ABV",
+                                                                    "Acidity" = "Acidity"),
+                                                        selected = "price")
+                                     ),
+                                     column(4, numericInput("hexMin", "Y Minimum:", value = 0)),
+                                     column(4, numericInput("hexMax", "Y Maximum:", value = 200))
+                                   ),
+                                   br(),
+                                   fluidRow(
+                                     column(6, box(title = "Europe", status = "primary", solidHeader = TRUE,
+                                                   plotOutput("hex1", height = "550px"), width = 12)),
+                                     column(6, box(title = "Americas", status = "success", solidHeader = TRUE,
+                                                   plotOutput("hex2", height = "550px"), width = 12))
+                                   )
+                          ),
+                          
+                          # ----- Tab 3 -----
+                          tabPanel("3. Wine Type",
+                                   br(),
+                                   p("In the third tab, the variables can be compared by wine type. Once again, a distinction is made between European and American countries."),
+                                   p("The variable is specified in the first field and the wine type to be compared in the second. Use the “Y minimum” and “Y maximum” buttons to set the scale accordingly."),
+                                   p("If you select the “Acidity” variable, the scale is set from low to high.Please note that depending on how the scale is set, certain values may no longer be visible."),
+                                   br(),
+                                   fluidRow(
+                                     column(3,
+                                            selectInput("wineType", "Wine Type:",
+                                                        choices = c("All", "Red", "White", "Sparkling", "Dessert/Port", "Port"),
+                                                        selected = "All")
+                                     ),
+                                     column(3,
+                                            selectInput("typeYVar", "Y-Variable:",
+                                                        choices = c("Rating" = "points",
+                                                                    "Price" = "price",
+                                                                    "ABV" = "ABV",
+                                                                    "Acidity" = "Acidity"),
+                                                        selected = "points")
+                                     ),
+                                     column(3, numericInput("typeYMin", "Y Minimum:", value = 0)),
+                                     column(3, numericInput("typeYMax", "Y Maximum:", value = 100))
+                                   ),
+                                   br(),
+                                   fluidRow(
+                                     column(6, box(title = "Europe", status = "primary", solidHeader = TRUE,
+                                                   plotOutput("bubble_type_europe", height = "550px"), width = 12)),
+                                     column(6, box(title = "Americas", status = "success", solidHeader = TRUE,
+                                                   plotOutput("bubble_type_americas", height = "550px"), width = 12))
+                                   )
+                          )
+              ) 
+      ))
     )
   )
 
