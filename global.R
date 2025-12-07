@@ -7,6 +7,12 @@ library(shinydashboard)
 library(corrplot)
 library(vcd)
 
+if (!file.exists("data/joined_dataset2.csv")) {
+  source("scripts/combining_datasets.R")   # erzeugt joinedWines + CSV
+}
+
+joinedWines <- read.csv("data/joined_dataset2.csv")
+
 ## Loading Data
 XWines_raw <- read.csv("data/XWines_Full_100K_wines.csv", header = TRUE, sep = ",")
 XWines_ratings <- read.csv("data/XWines_Slim_150K_ratings.csv")
