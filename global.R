@@ -8,7 +8,7 @@ library(corrplot)
 library(vcd)
 
 if (!file.exists("data/joined_dataset2.csv")) {
-  source("scripts/combining_datasets.R")   # erzeugt joinedWines + CSV
+  source("scripts/combining_datasets.R")   # erzeugt joinedWines + joined_dataset2.csv
 }
 
 joinedWines <- read.csv("data/joined_dataset2.csv")
