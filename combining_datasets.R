@@ -46,4 +46,21 @@ joinedWines <- inner_join(
   by = c("WineName_clean", "WineryName_clean")
 )
 
+# clean Country names
+joinedWines <- joinedWines %>%
+  mutate(
+    country_clean = case_when(
+      tolower(coalesce(country, Country)) %in% c("us", "united states", "usa") ~ "United States",
+      tolower(coalesce(country, Country)) %in% c("france", "francia") ~ "France",
+      tolower(coalesce(country, Country)) %in% c("italy", "italia") ~ "Italy",
+      tolower(coalesce(country, Country)) %in% c("spain", "españa", "espana") ~ "Spain",
+      tolower(coalesce(country, Country)) %in% c("portugal") ~ "Portugal",
+      tolower(coalesce(country, Country)) %in% c("germany", "deutschland") ~ "Germany",
+      TRUE ~ str_to_title(coalesce(country, Country))
+    ),
+    
+    # define Acidity as a factor
+    Acidity = factor(Acidity, levels = c("Low", "Medium", "High"), ordered = TRUE)
+  )
+
 write.csv(joinedWines, "data/joined_dataset2.csv")
