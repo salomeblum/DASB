@@ -30,68 +30,39 @@ server <- function(input, output){
   })
   
   
-  # ---- DQA Outputs XWines Ratings ----
-  output$xwr_structure_table <- renderTable({ xwr_structure_table })
-  output$xwr_missing_table   <- renderTable({ xwr_missing_table })
-  output$xwr_dup_count       <- renderText({ paste("Duplikate:", xwr_dup_count) })
+  # ---- DQA Outputs winemag ----
+  output$winemag_structure_table <- renderTable({ winemag_structure_table })
+  output$winemag_missing_table   <- renderTable({ winemag_missing_table })
+  output$winemag_dup_count       <- renderText({ paste("Duplikate:", winemag_dup_count) })
   
-  output$xwr_hist_numeric <- renderPlot({
-    ggplot(xwr_numeric_long, aes(x = Wert)) +
+  output$winemag_hist_numeric <- renderPlot({
+    ggplot(winemag_numeric_long, aes(x = Wert)) +
       geom_histogram(bins = 50, fill = "steelblue", color = "black") +
       facet_wrap(~Variable, scales = "free", ncol = 2)
   })
   
-  output$xwr_box_numeric <- renderPlot({
-    ggplot(xwr_box_numeric, aes(x = Variable, y = Wert)) +
+  output$winemag_box_numeric <- renderPlot({
+    ggplot(winemag_box_numeric, aes(x = Variable, y = Wert)) +
       geom_boxplot(outlier.color = "red", fill = "steelblue", color = "black", alpha = 0.7) +
       facet_wrap(~Variable, scales = "free", ncol = 2)
   })
   
-  output$xwr_outliers_abv_r <- renderPlot({
-    ggplot(xwr_outliers_Rating, aes(x = seq_along(Rating), y = Rating)) +
+  output$winemag_points_outliers <- renderPlot({
+    ggplot(winemag_points_outliers_Rating, aes(x = seq_along(points), y = points)) +
       geom_point(color = "red") +
       geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
       geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
   })
   
-  output$xwr_corr_matrix <- renderPlot({
-    corrplot(xwr_cor_matrix, method = "color", type = "upper",
-             tl.col = "black", number.cex = 0.6)
-  })
-  
-  # ---- DQA Outputs Kaggle ----
-  output$kaggle_structure_table <- renderTable({ kaggle_structure_table })
-  output$kaggle_missing_table   <- renderTable({ kaggle_missing_table })
-  output$kaggle_dup_count       <- renderText({ paste("Duplikate:", kaggle_dup_count) })
-  
-  output$kaggle_hist_numeric <- renderPlot({
-    ggplot(kaggle_numeric_long, aes(x = Wert)) +
-      geom_histogram(bins = 50, fill = "steelblue", color = "black") +
-      facet_wrap(~Variable, scales = "free", ncol = 2)
-  })
-  
-  output$kaggle_box_numeric <- renderPlot({
-    ggplot(kaggle_box_numeric, aes(x = Variable, y = Wert)) +
-      geom_boxplot(outlier.color = "red", fill = "steelblue", color = "black", alpha = 0.7) +
-      facet_wrap(~Variable, scales = "free", ncol = 2)
-  })
-  
-  output$kaggle_points_outliers <- renderPlot({
-    ggplot(kaggle_points_outliers_Rating, aes(x = seq_along(points), y = points)) +
+  output$winemag_price_outliers <- renderPlot({
+    ggplot(winemag_price_outliers_Rating, aes(x = seq_along(price), y = price)) +
       geom_point(color = "red") +
       geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
       geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
   })
   
-  output$kaggle_price_outliers <- renderPlot({
-    ggplot(kaggle_price_outliers_Rating, aes(x = seq_along(price), y = price)) +
-      geom_point(color = "red") +
-      geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
-      geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
-  })
-  
-  output$kaggle_corr_matrix <- renderPlot({
-    corrplot(kaggle_cor_matrix, method = "color", type = "upper",
+  output$winemag_corr_matrix <- renderPlot({
+    corrplot(winemag_cor_matrix, method = "color", type = "upper",
              tl.col = "black", number.cex = 0.6)
   })
   
@@ -112,8 +83,8 @@ server <- function(input, output){
     
     # compute correlation value
     cor_value <- cor(
-      num_joined_data[[var1]],
-      num_joined_data[[var2]],
+      q1_num_joined_data[[var1]],
+      q1_num_joined_data[[var2]],
       use = "complete.obs"
     )
     
