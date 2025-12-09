@@ -194,6 +194,6 @@ q1_categ_cols <-c("Acidity", "Body", "Type")
 q1_all_vars <-c(q1_categ_cols, q1_col_vec)
 
 #variable for correlation matrix
-q1_joined_cor_matrix <- cor(num_joined_data, use = "pairwise.complete.obs") 
+q1_joined_cor_matrix <- cor(q1_num_joined_data, use = "pairwise.complete.obs") 
 
 
