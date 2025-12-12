@@ -38,9 +38,13 @@ dashboardPage(
             ),
             p("This section is dedicated to investigate the structure of the data used in our project. 
                We have worked with two datasets, which form the basis of our analysis."),
-            p(strong("note:"),"This part of the Shiny app is not designed to be interactive.
-              Its purpose is to show which steps were included in the Data Quality Assessment (DQA) procedure
-              that we performed with the two Datasaets:"),
+            p(
+              style = "color: #5a2d82; font-style: italic;",
+              strong("Note: "),
+              "This part of the Shiny app is not designed to be interactive. ",
+              "Its purpose is to show which steps were included in the Data Quality Assessment (DQA) procedure ",
+              "that we performed with the two datasets."
+            ),
             
             tags$ul(
               tags$li("XWines dataset: https://github.com/rogerioxavier/X-Wines/tree/main/Dataset/last"),
@@ -48,11 +52,14 @@ dashboardPage(
             ),
             
             p("Both datasets include information on wine types, alcohol content, acidity, price, ratings, 
-              and other descriptive features. For our project, we created one combined dataset by selecting 
-              and merging important variables from both sources."),
+              and other descriptive features. "),
             
+            h5(
+              strong("Combined Dataset"),
+              style = "text-align:left; color:#5a2d82; margin-bottom:15px; margin-top: 30px;"
+            ),
            p(
-            "This combined dataset allows us to compare numerical variables such as ",
+            "For our project, we created one combined dataset by joining the variable designation with WineName and winery with WineryName. This combined dataset allows us to compare numerical variables such as ",
             tags$span(style = "color:#5a2d82; font-weight:600; font-style:italic;", "price"), ", ",
             tags$span(style = "color:#5a2d82; font-weight:600; font-style:italic;", "rating"), ", ",
             tags$span(style = "color:#5a2d82; font-weight:600; font-style:italic;", "acidity"), " and ",
@@ -492,7 +499,7 @@ dashboardPage(
           
           # ----- Tab 2 -----
           tabPanel(
-            "1. Variable Comparison",
+            "Variable Comparison",
             br(),
             p("In this tab, you can compare the values of difrent variables for European and American countries."),
             p("To do this, select a variable in the first selection field at the top and use the Y minimum and Y maximum fields to set the axes so that they show the desired value range."),
@@ -536,7 +543,7 @@ dashboardPage(
           
           # ----- Tab 2 -----
           tabPanel(
-            "2. Rating vs. Variable",
+            "Rating vs. Variable",
             br(), 
             p("In the second tab, you can compare different variables with the rating. The values are divided again into European and American countries."), 
             p("In the first selection field, you can select the desired variable and use the “Y minimum” and “Y maximum” buttons to set the scale accordingly."), 
@@ -579,7 +586,7 @@ dashboardPage(
           
           # ----- Tab 3 -----
           tabPanel(
-            "3. Wine Type",
+            "Wine Type",
             br(),
             p("In the third tab, the variables can be compared by wine type. Once again, a distinction is made between European and American countries."),
             p("The variable is specified in the first field and the wine type to be compared in the second. Use the “Y minimum” and “Y maximum” buttons to set the scale accordingly."),
