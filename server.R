@@ -99,38 +99,74 @@ server <- function(input, output){
   # ---- Scatterplots
   #Show Scatterplots of two selected variables
   
+  #Linear model - Reactive
+  model_fit <- reactive({
+    
+    var_x <- input$q1_select_scatter_x
+    var_y <- input$q1_select_scatter_y
+    
+    req(
+      nzchar(var_x), nzchar(var_y),
+      var_x %in% names(joined_data),
+      var_y %in% names(joined_data),
+      is.numeric(joined_data[[var_x]]),
+      is.numeric(joined_data[[var_y]])
+    )
+    
+    lm(
+      joined_data[[var_y]] ~ joined_data[[var_x]]
+    )
+  })
+  
+  
+  
   output$q1_scatter_plot <- renderPlot({
+    
+    fit <- model_fit()
     
     var_x <- input$q1_select_scatter_x
     var_y <- input$q1_select_scatter_y
     var_color <- input$q1_select_scatter_color
     
-    # missing x or y => no plot
-    if (is.null(var_x) || is.null(var_y)) return(NULL)
+    req(
+      nzchar(var_x), nzchar(var_y),
+      var_x %in% names(joined_data),
+      var_y %in% names(joined_data)
+    )
     
-    # base plot
-    p <- ggplot(joined_data, aes_string(x = var_x, y = var_y))
+    p <- ggplot(
+      joined_data,
+      aes(x = .data[[var_x]], y = .data[[var_y]])
+    )
     
-    # add points (with or without color mapping)
-    if (var_color != "None") {
-      p <- p + geom_point(aes_string(color = var_color), alpha = 0.6)
+    if (nzchar(var_color) && var_color %in% names(joined_data)) {
+      p <- p + geom_point(aes(color = .data[[var_color]]), alpha = 0.6)
     } else {
-      p <- p + geom_point(alpha = 0.6, color = "#2C3E50")
+      p <- p + geom_point(color = "#2C3E50", alpha = 0.6)
     }
     
-    # add regression line
-    p <- p +
-      geom_smooth(method = "lm", se = TRUE, color = "red") +
+    p +
+      geom_abline(
+        intercept = coef(fit)[1],
+        slope = coef(fit)[2],
+        color = "red",
+        linewidth = 1
+      ) +
       theme_minimal(base_size = 14) +
       labs(
         x = var_x,
         y = var_y,
-        color = var_color,
         title = paste("Scatterplot:", var_x, "vs", var_y)
       )
-    
-    p
   })
+  
+  
+  output$q1_rss <- renderText({
+    
+    fit <- model_fit()
+    paste("RSS:", round(deviance(fit), 2))
+  })
+  
   
   # ---- Categorical Plots
   #Violinplot

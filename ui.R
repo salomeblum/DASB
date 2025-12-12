@@ -202,9 +202,7 @@ dashboardPage(
         tabsetPanel(
           type = "tabs",
           
-          # ------------------------------------------------------------------------------------
-          # TAB 1: INTRODUCTION
-          # ------------------------------------------------------------------------------------
+          # ------------- Tab 1: Introduction
           tabPanel(
             "Introduction",
             
@@ -230,9 +228,8 @@ dashboardPage(
             )
           ),
           
-          # ------------------------------------------------------------------------------------
-          # TAB 2: CORRELATION
-          # ------------------------------------------------------------------------------------
+ 
+          # ---------------Tab 2: CORRELATION----------------
           tabPanel(
             "Correlation",
             
@@ -241,7 +238,7 @@ dashboardPage(
                 h3("Analyze the correlation between different variables"),
                 p("Choose two variables and compute their correlation value"),
                 
-                # ---------------- ROW 1: Inputs left, correlation result right ----------------
+                # ---------------- Row 1: Inputs left, correlation result right ----------------
                 fluidRow(
                   
                   # Left: Inputs
@@ -273,7 +270,7 @@ dashboardPage(
                 # --- Divider between upper and lower row ---
                 tags$hr(style = "margin-top: 20px; margin-bottom: 20px; border-top: 2px solid #999;"),
                 
-                # ---------------- ROW 2: Plot left, variable description right ----------------
+                # ---------------- Row 2: Plot left, variable description right ----------------
                 p("View correlation plot between all the variables"),
                 
                 fluidRow(
@@ -310,8 +307,8 @@ dashboardPage(
         
           ## ---- Q1: SCATTER ----
           tabPanel(
-            "Scatterplots",
-            h3("Analyze relationships between different variables via scatterplots"),
+            "Linear Model",
+            h3("Analyze relationships between different variables via scatterplots and a linear model"),
             
             # ---------- ROW 1: Inputs ----------
             fluidRow(
