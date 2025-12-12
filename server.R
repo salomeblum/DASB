@@ -50,15 +50,15 @@ server <- function(input, output){
   output$winemag_points_outliers <- renderPlot({
     ggplot(winemag_points_outliers_Rating, aes(x = seq_along(points), y = points)) +
       geom_point(color = "red") +
-      geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
-      geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
+      geom_hline(yintercept = winemag_points_lower_limit, color = "blue", linetype = "dashed") +
+      geom_hline(yintercept = winemag_points_upper_limit, color = "blue", linetype = "dashed")
   })
   
   output$winemag_price_outliers <- renderPlot({
     ggplot(winemag_price_outliers_Rating, aes(x = seq_along(price), y = price)) +
       geom_point(color = "red") +
-      geom_hline(yintercept = xwr_lower_limit, color = "blue", linetype = "dashed") +
-      geom_hline(yintercept = xwr_upper_limit, color = "blue", linetype = "dashed")
+      geom_hline(yintercept = winemag_price_lower_limit, color = "blue", linetype = "dashed") +
+      geom_hline(yintercept = winemag_price_upper_limit, color = "blue", linetype = "dashed")
   })
   
   output$winemag_corr_matrix <- renderPlot({

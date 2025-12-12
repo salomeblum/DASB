@@ -78,43 +78,43 @@ dashboardPage(
           type = "tabs",
           tabPanel(
             "Structure of the Data",
-            p("The Structure of the Data is shown"),
+            p("The",strong("Structure"),"of the Data is shown"),
             tableOutput("xw_structure_table")
           ),
           
           tabPanel(
             "Missing Values",
-            p("This Tab shows a Table with the number of missing Values"),
+            p("This Tab shows a Table with the number of",strong("missing Values")),
             tableOutput("xw_missing_table")
           ),
           
           tabPanel(
             "Duplicates",
-            p("This Tab shows if there are duplicates in the Dataset"),
+            p("This Tab shows if there are",strong("duplicates"),"in the Dataset"),
             tableOutput("xw_dup_count")
           ),
           
           tabPanel(
             "Histograms",
-            p("This Tab shows the histograms of the numeric Data"),
+            p("This Tab shows the",strong("histograms"),"of the numeric Data"),
             plotOutput("xw_hist_numeric")
           ),
           
           tabPanel(
             "Boxplots",
-            p("This Tab shows the boxplots of the numeric Data"),
+            p("This Tab shows the",strong("boxplots"),"of the numeric Data"),
             plotOutput("xw_box_numeric")
           ),
           
           tabPanel(
             "Outliers",
-            p("This Tab shows the outliers of the numeric column ABV"),
+            p("This Tab shows the",strong("outliers"),"of the numeric column" ,strong("ABV")),
             plotOutput("xw_outliers_abv")
           ),
           
           tabPanel(
             "Correlation Matrix",
-            p("This Tab shows the correlations between the numeric Data"),
+            p("This Tab shows the",strong("correlations"),"between the numeric Data"),
             plotOutput("xw_corr_matrix")
           )
         )
@@ -132,49 +132,49 @@ dashboardPage(
           type = "tabs",
           tabPanel(
             "Structure of the Data",
-            p("The Structure of the Data is shown"),
+            p("The",strong("Structure"),"of the Data is shown"),
             tableOutput("winemag_structure_table")
           ),
           
           tabPanel(
             "Missing Values",
-            p("This Tab shows a Table with the number of missing Values"),
+            p("This Tab shows a Table with the number of",strong("missing Values")),
             tableOutput("winemag_missing_table")
           ),
           
           tabPanel(
             "Duplicates",
-            p("This Tab shows if there are duplicates in the Dataset"),
+            p("This Tab shows if there are",strong("duplicates"),"in the Dataset"),
             tableOutput("winemag_dup_count")
           ),
           
           tabPanel(
             "Histograms",
-            p("This Tab shows the histograms of the numeric Data"),
+            p("This Tab shows the",strong("histograms"),"of the numeric Data"),
             plotOutput("winemag_hist_numeric")
           ),
           
           tabPanel(
             "Boxplots",
-            p("This Tab shows the boxplots of the numeric Data"),
+            p("This Tab shows the", strong("boxplots"),"of the numeric Data"),
             plotOutput("winemag_box_numeric")
           ),
           
           tabPanel(
             "Outliers Points",
-            p("This Tab shows the outliers of the numeric column Points"),
+            p("This Tab shows the",strong("outliers"),"of the numeric column",strong("Points")),
             plotOutput("winemag_points_outliers")
           ),
           
           tabPanel(
             "Outliers Price",
-            p("This Tab shows the outliers of the numeric column Price"),
+            p("This Tab shows the",strong("outliers"),"of the numeric column",strong("Price")),
             plotOutput("winemag_price_outliers")
           ),
           
           tabPanel(
             "Correlation Matrix",
-            p("This Tab shows the correlations between the numeric Data"),
+            p("This Tab shows the",strong("correlations"),"between the numeric Data"),
             plotOutput("winemag_corr_matrix")
           )
         )
