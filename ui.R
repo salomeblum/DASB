@@ -347,6 +347,19 @@ dashboardPage(
               column(
                 width = 5,
                 tags$div(
+                  id = "cor_output_box",
+                  style = "
+                background-color: white;
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 6px;
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 25px;
+              ",
+                  textOutput("q1_rss")
+                ),
+                tags$div(
                   style = "
                  background-color: white;
                  border: 1px solid #ccc;
