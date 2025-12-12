@@ -37,7 +37,10 @@ dashboardPage(
               style = "text-align:center; color:#5a2d82; font-weight:bold; margin-bottom:30px;"
             ),
             p("This section is dedicated to investigate the structure of the data used in our project. 
-               We have worked with two datasets, which form the basis of our analysis:"),
+               We have worked with two datasets, which form the basis of our analysis."),
+            p(strong("note:"),"This part of the Shiny app is not designed to be interactive.
+              Its purpose is to show which steps were included in the Data Quality Assessment (DQA) procedure
+              that we performed with the two Datasaets:"),
             
             tags$ul(
               tags$li("XWines dataset: https://github.com/rogerioxavier/X-Wines/tree/main/Dataset/last"),
