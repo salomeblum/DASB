@@ -355,7 +355,8 @@ dashboardPage(
                 border-radius: 6px;
                 font-size: 20px;
                 font-weight: bold;
-                margin-top: 25px;
+                margin-top: 5px;
+                margin-bottom: 15px;
               ",
                   textOutput("q1_rss")
                 ),
